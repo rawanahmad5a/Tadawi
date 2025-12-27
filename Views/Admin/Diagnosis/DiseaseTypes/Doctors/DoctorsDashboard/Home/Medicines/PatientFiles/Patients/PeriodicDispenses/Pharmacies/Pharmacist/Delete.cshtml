@@ -1,0 +1,37 @@
+﻿@model Tadawi.Models.Pharmacy
+@{
+    ViewData["Title"] = "حذف صيدلية";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="card-title text-danger">حذف صيدلية</h4>
+                <p class="card-description"> هل أنت متأكد من رغبتك في حذف هذه الصيدلية؟ </p>
+                
+                <div class="bg-light p-4 rounded mb-4 text-right" style="direction: rtl;">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">الاسم:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+                        <dt class="col-sm-4">الهاتف:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+                        <dt class="col-sm-4">الموقع:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Location)</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="DeleteConfirmed">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger btn-fw">
+                        <i class="mdi mdi-delete"></i> تأكيد الحذف
+                    </button>
+                    <a asp-action="Index" class="btn btn-light btn-fw">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
