@@ -1,0 +1,39 @@
+﻿@model Tadawi.Models.DiseaseType
+@{
+    ViewData["Title"] = "إضافة تصنيف مرض";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">إضافة تصنيف مرض جديد</h4>
+                <p class="card-description"> أدخل بيانات المرض </p>
+                
+                <form asp-action="Create" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="DiseaseName">اسم المرض (العلمي)</label>
+                        <input asp-for="DiseaseName" class="form-control" placeholder="مثلاً: التهاب المفاصل، السكري..." />
+                        <span asp-validation-for="DiseaseName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Symptoms">الأعراض (اختياري)</label>
+                        <textarea asp-for="Symptoms" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Symptoms" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
