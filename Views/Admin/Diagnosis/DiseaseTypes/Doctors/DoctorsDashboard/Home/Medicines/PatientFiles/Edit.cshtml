@@ -1,0 +1,35 @@
+﻿@model Tadawi.Models.PatientFile
+
+@{
+    ViewData["Title"] = "تعديل ملف مريض";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">تعديل ملف المريض</h4>
+                <p class="card-description"> قم بتعديل البيانات المطلوبة </p>
+                
+                <form asp-action="Edit" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <label asp-for="Diagnosis">التشخيص</label>
+                        <textarea asp-for="Diagnosis" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ التعديلات</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
