@@ -1,0 +1,34 @@
+﻿@model Tadawi.Models.Diagnosis
+
+@{
+    ViewData["Title"] = "تفاصيل التشخيص";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-4 border-bottom pb-3">
+                    <h2 class="text-primary"><i class="mdi mdi-stethoscope"></i> تفاصيل التشخيص</h2>
+                </div>
+
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <h5 class="font-weight-bold text-primary mb-3">الوصف</h5>
+                        <p class="lead text-dark">@Model.Description</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-gradient-warning btn-fw me-2">
+                        <i class="mdi mdi-pencil"></i> تعديل
+                    </a>
+                    <a asp-action="Index" class="btn btn-light btn-fw">
+                        <i class="mdi mdi-arrow-right"></i> عودة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

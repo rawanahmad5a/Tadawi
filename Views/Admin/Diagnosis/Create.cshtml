@@ -1,0 +1,33 @@
+﻿@model Tadawi.Models.Diagnosis
+@{
+    ViewData["Title"] = "إضافة تشخيص";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">إضافة تشخيص جديد</h4>
+                <p class="card-description"> أدخل تفاصيل التشخيص </p>
+                
+                <form asp-action="Create" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Description">التشخيص / الوصف</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="اكتب تفاصيل التشخيص هنا..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ التشخيص</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
