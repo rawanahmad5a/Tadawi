@@ -1,0 +1,269 @@
+@model Tadawi.Models.Visit
+
+@{
+    ViewData["Title"] = "التشخيص";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-stethoscope me-2"></i> @ViewData["Title"]</h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Client Info Banner -->
+                    <div class="d-flex align-items-center bg-light p-3 rounded-3 mb-4 border-end border-primary border-4 shadow-sm">
+                        <div class="bg-primary text-white rounded-circle p-2 me-3" style="width: 50px; height:50px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user-injured fa-lg"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">@Model.Patient.Name</h5>
+                            <span class="text-muted small">رقم الملف: #@Model.Patient.PatientFileId | نوع الزيارة: @Model.VisitType</span>
+                        </div>
+                    </div>
+
+                    <form asp-action="AddDiagnosis" method="post" id="mainForm">
+                        <input type="hidden" name="visitId" value="@Model.Id" />
+
+                        <div class="row mb-5">
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold h5 text-dark mb-3">المرض</label>
+                                <select name="diseaseTypeId" id="DiseaseSelector" class="form-select select2 shadow-none border-primary" required>
+                                    <option value="">-- اختر التشخيص --</option>
+                                    @foreach (var d in ViewBag.Diseases as List<Tadawi.Models.DiseaseType>)
+                                    {
+                                        <option value="@d.Id" selected="@(Model.DiseaseTypeId == d.Id ? "selected" : null)">@d.DiseaseName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Medicines Section -->
+                        <div class="medicine-section border-top pt-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold text-primary mb-0"><i class="fas fa-pills me-2"></i> الوصفة العلاجية</h5>
+                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" id="addMedBtn">
+                                    <i class="fas fa-plus me-1"></i> إضافة دواء آخر
+                                </button>
+                            </div>
+
+                            <div id="medicineList">
+                                @if (Model.Prescriptions != null && Model.Prescriptions.Any())
+                                {
+                                    @foreach (var p in Model.Prescriptions)
+                                    {
+                                        var parts = (p.Dosage ?? "").Split('|');
+                                        var quantity = parts.Length > 0 ? parts[0].Trim() : "";
+                                        var form = parts.Length > 1 ? parts[1].Trim() : "";
+                                        var dosage = parts.Length > 2 ? parts[2].Trim() : "";
+                                        var duration = parts.Length > 3 ? parts[3].Trim() : "";
+
+                                        <div class="medicine-row card border bg-light-subtle rounded-3 p-3 mb-4 shadow-sm position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 delete-med-btn"></button>
+                                            <div class="row g-3">
+                                                <div class="col-md-12">
+                                                    <label class="form-label fw-bold small text-muted">الدواء</label>
+                                                    <select name="medicineIds" class="form-select medicine-select shadow-none border" required>
+                                                        <option value="">-- اختر الدواء --</option>
+                                                        @foreach (var m in ViewBag.Medicines as List<Tadawi.Models.Medicine>)
+                                                        {
+                                                            <option value="@m.Id" selected="@(p.MedicineId == m.Id ? "selected" : null)" data-type="@m.Type">@m.MedicineName (@m.Type)</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label small text-muted">الكمية</label>
+                                                    <input type="text" name="quantities" class="form-control" placeholder="1 علبة" value="@quantity" required />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label small text-muted">الشكل</label>
+                                                    <select name="forms" class="form-select">
+                                                        <option value="حبوب" selected="@(form == "حبوب" ? "selected" : null)">حبوب</option>
+                                                        <option value="شراب" selected="@(form == "شراب" ? "selected" : null)">شراب</option>
+                                                        <option value="حقن" selected="@(form == "حقن" ? "selected" : null)">حقن</option>
+                                                        <option value="مرهم" selected="@(form == "مرهم" ? "selected" : null)">مرهم</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label small text-muted">الاستعمال</label>
+                                                    <input type="text" name="dosages" class="form-control" placeholder="3 مرات" value="@dosage" required />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label small text-muted">المدة</label>
+                                                    <input type="text" name="durations" class="form-control" placeholder="7 أيام" value="@duration" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <!-- First empty row if new -->
+                                    <div class="medicine-row card border bg-light-subtle rounded-3 p-3 mb-4 shadow-sm position-relative">
+                                        <div class="row g-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-bold small text-muted">الدواء</label>
+                                                <select name="medicineIds" class="form-select medicine-select shadow-none border" required disabled>
+                                                    <option value="">-- اختر المرض أولاً --</option>
+                                                    @foreach (var m in ViewBag.Medicines as List<Tadawi.Models.Medicine>)
+                                                    {
+                                                        <option value="@m.Id" data-type="@m.Type">@m.MedicineName (@m.Type)</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted">الكمية</label>
+                                                <input type="text" name="quantities" class="form-control" placeholder="1 علبة" required />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted">الشكل</label>
+                                                <select name="forms" class="form-select">
+                                                    <option value="حبوب">حبوب</option>
+                                                    <option value="شراب">شراب</option>
+                                                    <option value="حقن">حقن</option>
+                                                    <option value="مرهم">مرهم</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted">الاستعمال</label>
+                                                <input type="text" name="dosages" class="form-control" placeholder="3 مرات" required />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted">المدة</label>
+                                                <input type="text" name="durations" class="form-control" placeholder="7 أيام" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-end mt-5">
+                            <a asp-action="Index" class="btn btn-light px-4 border">إلغاء</a>
+                            <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm rounded-pill">
+                                <i class="fas fa-paper-plane me-2"></i> إرسال الوصفة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template for adding new medicine JS -->
+<template id="medRowTemplate">
+    <div class="medicine-row card border bg-light-subtle rounded-3 p-3 mb-4 shadow-sm position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2 delete-med-btn"></button>
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label fw-bold small text-muted">الدواء</label>
+                <select name="medicineIds" class="form-select medicine-select shadow-none border" required>
+                    <option value="">-- اختر الدواء --</option>
+                    @foreach (var m in ViewBag.Medicines as List<Tadawi.Models.Medicine>)
+                    {
+                        <option value="@m.Id" data-type="@m.Type">@m.MedicineName (@m.Type)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">الكمية</label>
+                <input type="text" name="quantities" class="form-control" placeholder="1 علبة" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">الشكل</label>
+                <select name="forms" class="form-select">
+                    <option value="حبوب">حبوب</option>
+                    <option value="شراب">شراب</option>
+                    <option value="حقن">حقن</option>
+                    <option value="مرهم">مرهم</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">الاستعمال</label>
+                <input type="text" name="dosages" class="form-control" placeholder="3 مرات" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">المدة</label>
+                <input type="text" name="durations" class="form-control" placeholder="7 أيام" required />
+            </div>
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Function to filter medicines based on disease name
+            function filterMedicines() {
+                var diseaseText = $("#DiseaseSelector option:selected").text().trim();
+                var $medicines = $(".medicine-select");
+                
+                if (!diseaseText || diseaseText === "-- اختر التشخيص --") {
+                    $medicines.prop('disabled', true).val('');
+                    $medicines.find("option:first").text("-- اختر المرض أولاً --");
+                    return;
+                }
+                
+                $medicines.prop('disabled', false);
+                $medicines.find("option:first").text("-- اختر الدواء --");
+
+                $medicines.each(function() {
+                    var $select = $(this);
+                    var shownCount = 0;
+                    
+                    $select.find("option").each(function() {
+                        if ($(this).val() === "") return;
+                        
+                        var type = ($(this).data('type') || "").toLowerCase();
+                        var name = ($(this).text() || "").toLowerCase();
+                        var d = diseaseText.toLowerCase();
+
+                        // Flexible matching: name or type contains disease name or vice versa
+                        if (name.includes(d) || d.includes(name) || type.includes(d) || d.includes(type)) {
+                            $(this).show();
+                            shownCount++;
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    // Fallback: if no medicine found for this specific disease name, show all
+                    // to avoid a broken UI, but the user requested strictness. 
+                    // However, "not showing anything" is a bug.
+                    if (shownCount === 0) {
+                        $select.find("option").show();
+                    }
+                });
+            }
+
+            $("#DiseaseSelector").change(filterMedicines);
+            
+            // Re-filter on page load if already selected (Edit mode)
+            if ($("#DiseaseSelector").val()) filterMedicines();
+
+            // Add new medicine row
+            $("#addMedBtn").click(function() {
+                var content = $("#medRowTemplate").html();
+                $("#medicineList").append(content);
+                filterMedicines(); // Apply filter to new row
+            });
+
+            // Delete row
+            $(document).on('click', '.delete-med-btn', function() {
+                $(this).closest('.medicine-row').remove();
+            });
+        });
+    </script>
+}
+
+<style>
+    .bg-primary { background-color: #008080 !important; }
+    .text-primary { color: #008080 !important; }
+    .btn-primary { background-color: #008080; border-color: #008080; }
+    .btn-outline-primary { color: #008080; border-color: #008080; }
+    .btn-outline-primary:hover { background-color: #008080; }
+    .bg-primary-light { background-color: rgba(0, 128, 128, 0.1); }
+</style>

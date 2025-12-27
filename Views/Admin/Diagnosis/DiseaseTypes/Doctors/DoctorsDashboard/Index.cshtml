@@ -1,0 +1,123 @@
+@model IEnumerable<Tadawi.Models.Visit>
+
+@{
+    ViewData["Title"] = "لوحة الطبيب";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold">
+                <i class="fas fa-user-md me-2"></i> دكتور / @ViewBag.DoctorName
+            </h2>
+        </div>
+        <div class="col-md-6 text-start">
+            <span class="badge bg-white text-dark border p-2 px-3 shadow-sm">
+                <i class="fas fa-calendar-alt me-1 text-primary"></i> @DateTime.Now.ToString("dd/MM/yyyy")
+            </span>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-dark">
+                <i class="fas fa-tasks me-2 text-primary"></i> المهام الحالية
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">رقم الملف</th>
+                            <th>اسم المريض</th>
+                            <th>وقت الزيارة</th>
+                            <th>نوع الزيارة</th>
+                            <th class="text-center">حالة الزيارة</th>
+                            <th class="text-center">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted font-cairo">
+                                    <i class="fas fa-clipboard-list fa-3x mb-3 d-block opacity-25"></i>
+                                    لا توجد زيارات مسجلة.
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model)
+                        {
+                            var isCompleted = item.Prescriptions?.Any() == true;
+                            <tr>
+                                <td class="ps-4 fw-bold text-primary">#@item.Patient.PatientFileId</td>
+                                <td class="fw-bold">@item.Patient.Name</td>
+                                <td>
+                                    <span class="text-muted small">
+                                        <i class="far fa-clock me-1 text-primary"></i> @item.VisitDate.ToString("HH:mm")
+                                    </span>
+                                </td>
+                                <td>
+                                    @if(item.VisitType == "كشف") {
+                                        <span class="badge bg-primary-light text-primary">@item.VisitType</span>
+                                    } else {
+                                        <span class="badge bg-light text-dark border">@item.VisitType</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (isCompleted)
+                                    {
+                                        <span class="badge bg-success px-3 rounded-pill">
+                                            <i class="fas fa-check me-1"></i> تمت
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary px-3 rounded-pill opacity-75">
+                                            <i class="fas fa-clock me-1"></i> لم تتم
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-center px-4">
+                                    <div class="btn-group">
+                                        <a asp-action="PatientFile" asp-route-id="@item.PatientId" asp-route-visitId="@item.Id" 
+                                           class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="fas fa-id-card me-1"></i> فتح الملف
+                                        </a>
+                                        @if (!isCompleted)
+                                        {
+                                            <a asp-action="AddDiagnosis" asp-route-visitId="@item.Id" 
+                                               class="btn btn-primary btn-sm rounded-pill px-3 ms-2 shadow-sm">
+                                                <i class="fas fa-stethoscope me-1"></i> فحص
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="AddDiagnosis" asp-route-visitId="@item.Id" 
+                                               class="btn btn-warning btn-sm rounded-pill px-3 ms-2 shadow-sm">
+                                                <i class="fas fa-edit me-1"></i> تعديل
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary-light { background-color: rgba(0, 128, 128, 0.1); border: 1px solid rgba(0, 128, 128, 0.2); }
+    .text-primary { color: #008080 !important; }
+    .btn-primary { background-color: #008080; border-color: #008080; color: #fff; }
+    .btn-primary:hover { background-color: #006666; border-color: #006666; color: #fff; }
+    .btn-outline-primary { color: #008080; border-color: #008080; }
+    .btn-outline-primary:hover { background-color: #008080; color: #fff; }
+    .badge.bg-success { background-color: #28a745 !important; }
+    .btn-warning { background-color: #ffc107; border-color: #ffc107; color: #000; }
+</style>

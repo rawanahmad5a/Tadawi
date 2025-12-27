@@ -1,0 +1,149 @@
+@model Tadawi.Models.Patient
+
+@{
+    ViewData["Title"] = "ملف المريض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var visits = ViewBag.PatientVisits as IEnumerable<Tadawi.Models.Visit>;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold"><i class="fas fa-folder-open me-2"></i> الملف الطبي للمريض</h2>
+        </div>
+        <div class="col-md-6 text-start">
+            <a asp-action="Index" class="btn btn-light border btn-sm px-4">
+                <i class="fas fa-chevron-right me-1"></i> العودة للرئيسية
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Patient Info Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="bg-primary p-4 text-center text-white">
+                    <div class="avatar-box bg-white text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-user-injured fa-2x mt-3"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">@Model.Name</h4>
+                    <p class="mb-0 opacity-75">رقم ملف المريض: #@Model.PatientFileId</p>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                            <span class="text-muted"><i class="fas fa-phone-alt me-2 text-primary"></i> الهاتف</span>
+                            <span class="fw-bold">@Model.Phone</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                            <span class="text-muted"><i class="fas fa-calendar-day me-2 text-primary"></i> العمر</span>
+                            <span class="fw-bold">@Model.Age سنة</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                            <span class="text-muted"><i class="fas fa-venus-mars me-2 text-primary"></i> الجنس</span>
+                            <span class="fw-bold">@Model.Gender</span>
+                        </div>
+                        <div class="d-flex flex-column border-bottom pb-2">
+                            <span class="text-muted mb-1"><i class="fas fa-map-marker-alt me-2 text-primary"></i> العنوان</span>
+                            <span class="fw-bold">@Model.Address</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <a asp-action="AddDiagnosis" asp-route-visitId="@ViewBag.CurrentVisitId" class="btn btn-primary py-2 rounded-3 shadow-none">
+                            <i class="fas fa-plus-circle me-1"></i> إضافة تشخيص ووصفة
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Content -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h5 class="fw-bold mb-4 text-dark border-bottom pb-3">
+                    <i class="fas fa-history me-2 text-primary"></i> السجل المرضي الكامل
+                </h5>
+
+                @if (visits != null && visits.Any())
+                {
+                    <div class="history-list">
+                        @foreach (var visit in visits)
+                        {
+                            <div class="history-card bg-light p-4 rounded-3 mb-4 border-end border-primary border-4 shadow-sm">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h6 class="fw-bold text-primary mb-1">زيارة: @visit.VisitType</h6>
+                                        <span class="text-muted small"><i class="fas fa-user-md me-1"></i> د. @visit.Doctor.Name</span>
+                                    </div>
+                                    <span class="badge bg-white text-dark border p-2">
+                                        <i class="far fa-calendar-alt me-1 text-primary"></i> @visit.VisitDate.ToString("dd/MM/yyyy")
+                                    </span>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="p-3 bg-white rounded border">
+                                            <h6 class="small fw-bold text-muted border-bottom pb-2 mb-2">التشخيص</h6>
+                                            <p class="mb-0 text-dark">
+                                                @if (visit.Diagnosis != null)
+                                                {
+                                                    @visit.Diagnosis.Description
+                                                    @if (visit.DiseaseType != null)
+                                                    {
+                                                        <span class="badge bg-primary-light text-primary ms-2">@visit.DiseaseType.DiseaseName</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted opacity-50 fst-italic">لا يوجد تشخيص مسجل</span>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    @if(visit.Prescriptions != null && visit.Prescriptions.Any())
+                                    {
+                                        <div class="col-12 mt-3">
+                                            <div class="p-3 bg-white rounded border">
+                                                <h6 class="small fw-bold text-muted border-bottom pb-2 mb-2">الأدوية الموصوفة</h6>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    @foreach(var p in visit.Prescriptions)
+                                                    {
+                                                        <div class="med-item border rounded p-2 bg-light-subtle">
+                                                            <i class="fas fa-pills text-primary me-2"></i>
+                                                            <span class="fw-bold">@p.Medicine.MedicineName</span>
+                                                            <div class="small text-muted mt-1 ms-4">@p.Dosage</div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5 opacity-50">
+                        <i class="fas fa-folder-open fa-3x mb-3"></i>
+                        <h5>لا يوجد سجل زيارات سابق لهذا المريض.</h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-box { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
+    .bg-primary-light { background-color: rgba(0, 128, 128, 0.1); border: 1px solid rgba(0, 128, 128, 0.2); }
+    .text-primary { color: #008080 !important; }
+    .bg-primary { background-color: #008080 !important; }
+    .btn-primary { background-color: #008080; border-color: #008080; }
+    .history-card { transition: transform 0.2s; }
+    .history-card:hover { transform: translateX(-5px); }
+    .med-item { min-width: 200px; }
+</style>
