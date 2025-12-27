@@ -1,0 +1,44 @@
+@model Tadawi.Models.Pharmacy
+@{
+    ViewData["Title"] = "إضافة صيدلية";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white py-3 text-center">
+                <h4 class="mb-0 fw-bold"><i class="fas fa-plus-square me-2"></i> @ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="CreatePharmacy" method="post">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">اسم الصيدلية</label>
+                        <input asp-for="Name" class="form-control rounded-3" placeholder="أدخل اسم الصيدلية" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">رقم الهاتف</label>
+                        <input asp-for="Phone" class="form-control rounded-3" placeholder="05xxxxxxxx" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">الموقع / العنوان</label>
+                        <input asp-for="Location" class="form-control rounded-3" placeholder="اسم الحي أو الشارع" required />
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill py-2 shadow-sm">
+                            <i class="fas fa-save me-2"></i> حفظ البيانات
+                        </button>
+                        <a asp-action="Pharmacies" class="btn btn-link text-muted mt-2">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary { background-color: #008080 !important; }
+    .btn-primary { background-color: #008080; border-color: #008080; }
+    .btn-primary:hover { background-color: #006666; }
+</style>

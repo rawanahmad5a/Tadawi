@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "لوحة تحكم المدير";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid p-4">
+    <!-- Welcome Card -->
+    <div class="card mb-4 shadow-sm" style="border-top: 6px solid #008080;">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold"><i class="bi bi-shield-check me-2"></i>لوحة تحكم مدير النظام</h2>
+                <p class="text-muted mb-0">مرحباً بك في لوحة التحكم الإدارية لنظام تداوي</p>
+            </div>
+            <i class="bi bi-gear display-4 text-muted"></i>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">إجمالي المستخدمين</h6>
+                        <h3 class="text-primary">@ViewBag.TotalUsers</h3>
+                    </div>
+                    <i class="bi bi-people display-6 text-primary"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">الأطباء</h6>
+                        <h3 class="text-primary">@ViewBag.TotalDoctors</h3>
+                    </div>
+                    <i class="bi bi-person-badge display-6 text-primary"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">السكرتارية</h6>
+                        <h3 class="text-primary">@ViewBag.TotalSecretaries</h3>
+                    </div>
+                    <i class="bi bi-person-lines-fill display-6 text-primary"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">الصيادلة</h6>
+                        <h3 class="text-primary">@ViewBag.TotalPharmacists</h3>
+                    </div>
+                    <i class="bi bi-capsule display-6 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>إجراءات سريعة</h5>
+                </div>
+                <div class="card-body d-grid gap-3">
+                    <a asp-action="CreateUser" class="btn btn-outline-primary py-2"><i class="bi bi-person-plus me-2"></i>إضافة مستخدم جديد</a>
+                    <a asp-action="Index" class="btn btn-outline-primary py-2"><i class="bi bi-people me-2"></i>إدارة المستخدمين</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-activity me-2"></i>نشاط النظام</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                            <span><i class="bi bi-check-circle text-success me-2"></i>النظام يعمل</span>
+                            <span class="badge bg-success">جيد</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                            <span><i class="bi bi-clock-history me-2"></i>آخر تحديث</span>
+                            <span class="badge bg-primary">@DateTime.Now.ToString("HH:mm")</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

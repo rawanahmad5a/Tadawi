@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "المدير العام";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold">
+                <i class="fas fa-shield-alt me-2"></i> المدير العام
+            </h2>
+        </div>
+        <div class="col-md-6 text-start">
+            <div class="badge bg-white text-dark border p-2 shadow-sm">
+                <i class="fas fa-clock me-1 text-primary"></i> @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 stat-card" style="border-right: 5px solid #008080 !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">إجمالي المستخدمين</h6>
+                            <h2 class="fw-bold mb-0">@ViewBag.TotalUsers</h2>
+                        </div>
+                        <div class="stat-icon bg-primary-light text-primary">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 stat-card" style="border-right: 5px solid #17a2b8 !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">الأطباء</h6>
+                            <h2 class="fw-bold mb-0">@ViewBag.TotalDoctors</h2>
+                        </div>
+                        <div class="stat-icon bg-info-light text-info">
+                            <i class="fas fa-user-md fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 stat-card" style="border-right: 5px solid #28a745 !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">الصيدليات</h6>
+                            <h2 class="fw-bold mb-0">@ViewBag.TotalPharmacies</h2>
+                        </div>
+                        <div class="stat-icon bg-success-light text-success">
+                            <i class="fas fa-clinic-medical fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 stat-card" style="border-right: 5px solid #6c757d !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">المستخدمين الآخرين</h6>
+                            <h2 class="fw-bold mb-0">@ViewBag.TotalOthers</h2>
+                        </div>
+                        <div class="stat-icon bg-secondary-light text-secondary">
+                            <i class="fas fa-user-shield fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h5 class="fw-bold mb-4"><i class="fas fa-bolt text-warning me-2"></i> إجراءات سريعة</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a asp-action="CreateUser" class="quick-action-btn">
+                            <i class="fas fa-user-plus fa-2x mb-2 text-primary"></i>
+                            <span>إضافة مستخدم</span>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a asp-action="CreatePharmacy" class="quick-action-btn">
+                            <i class="fas fa-plus-square fa-2x mb-2 text-success"></i>
+                            <span>إضافة صيدلية</span>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a asp-action="Users" class="quick-action-btn">
+                            <i class="fas fa-users-cog fa-2x mb-2 text-info"></i>
+                            <span>إدارة الصلاحيات</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-primary text-white">
+                <h5 class="fw-bold mb-3"><i class="fas fa-info-circle me-2"></i> حالة النظام</h5>
+                <hr class="bg-white">
+                <p class="mb-2"><i class="fas fa-check-circle me-2 text-white"></i> جميع الخدمات تعمل</p>
+                <p class="mb-2"><i class="fas fa-database me-2"></i> قاعدة البيانات متصلة</p>
+                <p class="mb-0"><i class="fas fa-sync-alt me-2"></i> آخر مزامنة: الآن</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card { transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .bg-primary-light { background-color: rgba(0, 128, 128, 0.1); }
+    .bg-info-light { background-color: rgba(23, 162, 184, 0.1); }
+    .bg-success-light { background-color: rgba(40, 167, 69, 0.1); }
+    .bg-secondary-light { background-color: rgba(108, 117, 125, 0.1); }
+    .quick-action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; border-radius: 15px; border: 2px dashed #eee; text-decoration: none; color: #333; transition: all 0.3s; }
+    .quick-action-btn:hover { background-color: #f8f9fa; border-color: #008080; color: #008080; }
+    .text-primary { color: #008080 !important; }
+    .bg-primary { background-color: #008080 !important; }
+</style>

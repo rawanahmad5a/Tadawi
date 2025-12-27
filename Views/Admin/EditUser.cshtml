@@ -1,0 +1,63 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+    ViewData["Title"] = "تعديل مستخدم";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white py-3 text-center">
+                <h4 class="mb-0 fw-bold"><i class="fas fa-user-edit me-2"></i> @ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditUser" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">البريد الإلكتروني</label>
+                        <input type="email" name="email" value="@Model.Email" class="form-control rounded-3" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">رقم الهاتف</label>
+                        <input type="text" name="phone" value="@Model.PhoneNumber" class="form-control rounded-3"
+                            required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الدور (الصلاحية)</label>
+                        <select name="role" class="form-select rounded-3" required>
+                            @foreach (var role in ViewBag.Roles as SelectList)
+                            {
+                                <option value="@role.Value" selected="@(role.Value == (string)ViewBag.UserRole)">@role.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill py-2 shadow-sm">
+                            <i class="fas fa-save me-2"></i> حفظ التغييرات
+                        </button>
+                        <a asp-action="Users" class="btn btn-link text-muted mt-2">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary {
+        background-color: #008080 !important;
+    }
+
+    .btn-primary {
+        background-color: #008080;
+        border-color: #008080;
+    }
+
+    .btn-primary:hover {
+        background-color: #006666;
+    }
+</style>

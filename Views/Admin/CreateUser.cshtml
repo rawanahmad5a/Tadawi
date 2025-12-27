@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "إضافة مستخدم جديد";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white py-3 text-center">
+                <h4 class="mb-0 fw-bold"><i class="fas fa-user-plus me-2"></i> @ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="CreateUser" method="post" id="createUserForm">
+                    <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">البريد الإلكتروني</label>
+                            <input type="email" name="email" class="form-control rounded-3"
+                                placeholder="email@example.com" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">كلمة المرور</label>
+                            <input type="password" name="password" class="form-control rounded-3" placeholder="********"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">رقم الهاتف</label>
+                            <input type="text" name="phone" class="form-control rounded-3" placeholder="05xxxxxxxx"
+                                required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">الدور (الصلاحية)</label>
+                            <select name="role" id="roleSelector" class="form-select rounded-3" required>
+                                <option value="">-- اختر الدور --</option>
+                                @if (ViewBag.Roles != null)
+                                {
+                                    @foreach (var role in ViewBag.Roles as SelectList)
+                                    {
+                                        <option value="@role.Value">@role.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Section for Doctor -->
+                    <div id="doctorFields" style="display: none;" class="bg-light p-3 rounded-3 mt-3 border">
+                        <h6 class="text-primary fw-bold mb-3 border-bottom pb-2">بيانات الطبيب الإضافية</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">الاسم الكامل</label>
+                                <input type="text" name="fullName" class="form-control rounded-3"
+                                    placeholder="د. الاسم الكامل" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">التخصص</label>
+                                <input type="text" name="specialization" class="form-control rounded-3"
+                                    placeholder="مثلاً: عيون، باطنية" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note for other roles -->
+                    <div id="otherInfo" style="display: none;"
+                        class="bg-light-subtle p-3 rounded-3 mt-3 border text-center text-muted small">
+                        سيتم إنشاء حساب <span id="roleLabel"></span> ببيانات الوصول الأساسية.
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill py-2 shadow-sm">
+                            <i class="fas fa-user-check me-2"></i> إنشاء الحساب
+                        </button>
+                        <a asp-action="Users" class="btn btn-link text-muted mt-2">إلغاء والعودة للقائمة</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function updateFields() {
+                var role = $('#roleSelector').val();
+                
+                // Reset all
+                $('#doctorFields').hide();
+                $('#otherInfo').hide();
+                $('input[name="fullName"]').prop('required', false);
+                $('input[name="specialization"]').prop('required', false);
+
+                if (role === 'Doctor') {
+                    $('#doctorFields').show();
+                    $('input[name="fullName"]').prop('required', true);
+                    $('input[name="specialization"]').prop('required', true);
+                } else if (role) {
+                    $('#roleLabel').text(role);
+                    $('#otherInfo').show();
+                }
+            }
+
+            $('#roleSelector').change(updateFields);
+            updateFields(); // Run on load
+        });
+    </script>
+}
+
+<style>
+    .bg-primary {
+        background-color: #008080 !important;
+    }
+
+    .btn-primary {
+        background-color: #008080;
+        border-color: #008080;
+    }
+
+    .btn-primary:hover {
+        background-color: #006666;
+    }
+
+    .text-primary {
+        color: #008080 !important;
+    }
+</style>

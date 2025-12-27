@@ -1,0 +1,59 @@
+@model Tadawi.Models.Pharmacy
+@{
+    ViewData["Title"] = "تعديل صيدلية";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white py-3 text-center">
+                <h4 class="mb-0 fw-bold"><i class="fas fa-edit me-2"></i> @ViewData["Title"]</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditPharmacy" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اسم الصيدلية</label>
+                        <input asp-for="Name" class="form-control rounded-3" required />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الموقع</label>
+                        <input asp-for="Location" class="form-control rounded-3" required />
+                        <span asp-validation-for="Location" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">رقم الهاتف</label>
+                        <input asp-for="Phone" class="form-control rounded-3" required />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill py-2 shadow-sm">
+                            <i class="fas fa-save me-2"></i> حفظ التغييرات
+                        </button>
+                        <a asp-action="Pharmacies" class="btn btn-link text-muted mt-2">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary {
+        background-color: #008080 !important;
+    }
+
+    .btn-primary {
+        background-color: #008080;
+        border-color: #008080;
+    }
+
+    .btn-primary:hover {
+        background-color: #006666;
+    }
+</style>

@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "إعدادات النظام";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold"><i class="fas fa-cog me-2"></i> إعدادات النظام</h2>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2">المعلومات العامة</h5>
+                <div class="row gy-4">
+                    <div class="col-md-6">
+                        <label class="text-muted small d-block">اسم النظام</label>
+                        <span class="fw-bold">نظام تداوي لإدارة العيادات (Tadawi HIS)</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small d-block">الإصدار</label>
+                        <span class="fw-bold text-success">v2.1.0 Institutional</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small d-block">خادم قاعدة البيانات</label>
+                        <span class="fw-bold">MSSQL LocalDB / SQLEXPRESS</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted small d-block">بيئة العمل</label>
+                        <span class="badge bg-primary px-3">Production Mode</span>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-top">
+                    <h6 class="fw-bold text-muted mb-3">الحالة الفنية للخدمات</h6>
+                    <div class="d-flex gap-4">
+                        <span class="badge bg-success-light text-success p-2 px-3 border"><i class="fas fa-check-circle me-1"></i> الربط مع الصيدلية: متصل</span>
+                        <span class="badge bg-success-light text-success p-2 px-3 border"><i class="fas fa-check-circle me-1"></i> وحدة التشخيص: تعمل</span>
+                        <span class="badge bg-success-light text-success p-2 px-3 border"><i class="fas fa-check-circle me-1"></i> الرسائل التلقائية: مفعلة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-light">
+                <h6 class="fw-bold mb-3">الدعم الفني</h6>
+                <p class="small text-muted mb-4">لأي مشاكل في النظام يرجى التواصل مع فريق التطوير التقني.</p>
+                <button class="btn btn-outline-primary btn-sm rounded-pill w-100 mb-2">طلب دعم فني</button>
+                <button class="btn btn-outline-secondary btn-sm rounded-pill w-100">سجل التغييرات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-primary { color: #008080 !important; }
+    .bg-success-light { background-color: rgba(40, 167, 69, 0.1); }
+    .btn-outline-primary { color: #008080; border-color: #008080; }
+</style>
