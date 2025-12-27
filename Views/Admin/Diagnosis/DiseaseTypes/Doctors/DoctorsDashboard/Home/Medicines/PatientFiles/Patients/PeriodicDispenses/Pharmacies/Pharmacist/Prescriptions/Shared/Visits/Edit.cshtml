@@ -1,0 +1,42 @@
+﻿@model Tadawi.Models.Visit
+
+@{
+    ViewData["Title"] = "تعديل زيارة";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">تعديل بيانات الزيارة</h4>
+                <p class="card-description"> قم بتعديل البيانات المطلوبة </p>
+                
+                <form asp-action="Edit" class="forms-sample">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="PatientId" />
+                    <input type="hidden" asp-for="DiagnosisId" />
+                    <input type="hidden" asp-for="DiseaseTypeId" />
+
+                    <div class="form-group">
+                        <label asp-for="DoctorId">الطبيب</label>
+                        <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="VisitDate">تاريخ الزيارة</label>
+                        <input asp-for="VisitDate" type="date" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="VisitType">ملاحظات / نوع الزيارة</label>
+                        <textarea asp-for="VisitType" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ التعديلات</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

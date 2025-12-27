@@ -1,0 +1,127 @@
+﻿@model Tadawi.Models.Visit
+
+@{
+    ViewData["Title"] = "حجز موعد جديد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedPatientId = Context.Request.Query["patientId"];
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h4 class="mb-0 text-primary"><i class="fas fa-calendar-check me-2"></i> حجز موعد جديد</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="PatientId" class="form-label fw-bold">المريض</label>
+                            @if (!string.IsNullOrEmpty(selectedPatientId))
+                            {
+                                <!-- Hidden input to bind the value -->
+                                <input type="hidden" asp-for="PatientId" value="@selectedPatientId" />
+                                <!-- Disabled select for display only -->
+                                <select class="form-select" asp-items="ViewBag.PatientId" disabled>
+                                    <option value="@selectedPatientId" selected></option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select asp-for="PatientId" class="form-select" asp-items="ViewBag.PatientId">
+                                    <option value="">-- اختر المريض --</option>
+                                </select>
+                            }
+                            <span asp-validation-for="PatientId" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">القسم الطبي</label>
+                            <select id="SpecializationFilter" class="form-select">
+                                <option value="">-- اختر القسم --</option>
+                                @if (ViewBag.Specializations != null)
+                                {
+                                    foreach (var spec in (List<string>)ViewBag.Specializations)
+                                    {
+                                        <option value="@spec">@spec</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="DoctorId" class="form-label fw-bold">الطبيب المعالج</label>
+                            <select asp-for="DoctorId" id="DoctorSelector" class="form-select" disabled data-bs-toggle="dropdown" data-bs-auto-close="true">
+                                <option value="">-- اختر الطبيب --</option>
+                            </select>
+                            <span asp-validation-for="DoctorId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="VisitDate" class="form-label fw-bold">تاريخ الزيارة</label>
+                            <input asp-for="VisitDate" class="form-control" type="datetime-local" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                            <span asp-validation-for="VisitDate" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="VisitType" class="form-label fw-bold">نوع الزيارة</label>
+                            <select asp-for="VisitType" class="form-select">
+                                <option value="كشف">كشف</option>
+                                <option value="مراجعة">مراجعة</option>
+                                <option value="استشارة">استشارة</option>
+                            </select>
+                            <span asp-validation-for="VisitType" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Medical fields removed as per request -->
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-controller="Patients" asp-action="Index" class="btn btn-outline-secondary me-md-2">إلغاء</a>
+                        <button type="submit" class="btn btn-primary px-5">تأكيد الحجز</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function () {
+            var allDoctors = @Html.Raw(Json.Serialize(ViewBag.DoctorsJson));
+
+            $("#SpecializationFilter").change(function () {
+                var spec = $(this).val();
+                var $doctorSelect = $("#DoctorSelector");
+                
+                $doctorSelect.empty();
+                $doctorSelect.append('<option value="">-- اختر الطبيب --</option>');
+
+                if (spec) {
+                    $doctorSelect.prop('disabled', false);
+                    var filtered = allDoctors.filter(d => d.specialization === spec);
+                    $.each(filtered, function (i, d) {
+                        $doctorSelect.append($('<option></option>').val(d.id).text(d.name));
+                    });
+                } else {
+                    $doctorSelect.prop('disabled', true);
+                }
+            });
+
+            @if (!string.IsNullOrEmpty(selectedPatientId))
+            {
+                <text>
+                // Ensure the dropdown shows the correct name even if disabled
+                $('select[name="PatientId_Display"]').val('@selectedPatientId');
+                </text>
+            }
+        });
+    </script>
+}

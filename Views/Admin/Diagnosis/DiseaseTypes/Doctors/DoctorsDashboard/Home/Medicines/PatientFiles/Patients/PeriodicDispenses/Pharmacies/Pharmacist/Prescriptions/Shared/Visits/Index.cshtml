@@ -1,0 +1,130 @@
+﻿@model IEnumerable<Tadawi.Models.Visit>
+
+@{
+    ViewData["Title"] = "إدارة الزيارات";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">سجل الزيارات</h4>
+                    <a asp-action="Create" class="btn btn-gradient-primary btn-fw">
+                        <i class="mdi mdi-calendar-plus"></i> زيارة جديدة
+                    </a>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>من تاريخ</label>
+                                <input type="date" class="form-control" id="dateFrom">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>إلى تاريخ</label>
+                                <input type="date" class="form-control" id="dateTo" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>نوع الزيارة</label>
+                                <select class="form-control" id="visitType">
+                                    <option value="">الكل</option>
+                                    <option value="استشارة">استشارة</option>
+                                    <option value="عودة">عودة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-primary btn-block mb-3" id="filterBtn">
+                                <i class="mdi mdi-filter"></i> تصفية
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-custom">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>المريض</th>
+                                <th>الطبيب</th>
+                                <th>التاريخ</th>
+                                <th>النوع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderByDescending(v => v.VisitDate))
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>
+                                        <div class="font-weight-bold">@item.Patient?.Name</div>
+                                        <small class="text-muted">@item.Patient?.Phone</small>
+                                    </td>
+                                    <td>
+                                        <div>@item.Doctor?.Name</div>
+                                        <small class="text-muted">@item.Doctor?.Specialization</small>
+                                    </td>
+                                    <td>
+                                        <div>@item.VisitDate.ToString("yyyy/MM/dd")</div>
+                                        <small class="text-muted">@item.VisitDate.ToString("hh:mm tt")</small>
+                                    </td>
+                                    <td>
+                                        <label class="badge badge-info">@item.DiseaseType?.DiseaseName</label>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.VisitType))
+                                        {
+                                            <label class="badge badge-success">تمت</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="badge badge-warning">انتظار</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Patients" asp-action="Details" asp-route-id="@item.PatientId" class="btn btn-inverse-primary btn-icon" title="فتح الملف">
+                                            <i class="mdi mdi-folder-account"></i>
+                                        </a>
+                                        <a asp-controller="Prescriptions" asp-action="Create" asp-route-visitId="@item.Id" class="btn btn-inverse-success btn-icon" title="وصفة طبية">
+                                            <i class="mdi mdi-file-document-box"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-inverse-warning btn-icon" title="تعديل">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-inverse-danger btn-icon" title="حذف">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#filterBtn').click(function() {
+                var value = $('#visitType').val().toLowerCase();
+                $(".table-custom tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
+}
