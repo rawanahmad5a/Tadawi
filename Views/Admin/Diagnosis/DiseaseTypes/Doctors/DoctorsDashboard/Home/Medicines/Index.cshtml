@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Tadawi.Models.Medicine>
+
+@{
+    ViewData["Title"] = "المخزون الدوائي";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">المخزون الدوائي</h4>
+                    <a asp-action="Create" class="btn btn-gradient-primary btn-fw">
+                        <i class="mdi mdi-plus"></i> إضافة دواء
+                    </a>
+                </div>
+
+                <!-- Inventory Stats -->
+                <div class="row mb-4">
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-danger card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">منتهية الصلاحية <i class="mdi mdi-alert-circle-outline mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">2</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-warning card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">أوشكت على النفاد <i class="mdi mdi-battery-alert mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">5</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-success card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">إجمالي الأدوية <i class="mdi mdi-cube-outline mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">@Model.Count()</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>الدواء (تجاري/علمي)</th>
+                                <th>الشكل والتركيز</th>
+                                <th>الكمية</th>
+                                <th>تاريخ الانتهاء</th>
+                                <th>الموقع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="font-weight-bold">@item.MedicineName</div>
+                                        <small class="text-muted">@item.Description</small>
+                                    </td>
+                                    <td>@item.Type</td>
+                                    <td><span class="font-weight-bold">40</span> وحدة</td> <!-- Placeholder -->
+                                    <td><span class="text-muted small">2026/12/01</span></td> <!-- Placeholder -->
+                                    <td><label class="badge badge-secondary">الرف A2</label></td> <!-- Placeholder -->
+                                    <td>
+                                        <label class="badge badge-success">متوفر</label>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-inverse-warning btn-icon" title="تعديل">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-inverse-info btn-icon" title="تفاصيل">
+                                            <i class="mdi mdi-information"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-inverse-danger btn-icon" title="حذف">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
