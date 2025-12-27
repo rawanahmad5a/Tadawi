@@ -1,0 +1,38 @@
+﻿@model Tadawi.Models.Prescription
+
+@{
+    ViewData["Title"] = "حذف وصفة";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="card-title text-danger">حذف وصفة طبية</h4>
+                <p class="card-description"> هل أنت متأكد من رغبتك في حذف هذه الوصفة؟ </p>
+                
+                <div class="bg-light p-4 rounded mb-4 text-right" style="direction: rtl;">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">المريض:</dt>
+                        <dd class="col-sm-8">@Model.Visit?.Patient?.Name</dd>
+
+                        <dt class="col-sm-4">الدواء:</dt>
+                        <dd class="col-sm-8">@Model.Medicine?.MedicineName</dd>
+
+                        <dt class="col-sm-4">تاريخ الصرف:</dt>
+                        <dd class="col-sm-8">@Model.DispenseDate</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger btn-fw">
+                        <i class="mdi mdi-delete"></i> تأكيد الحذف
+                    </button>
+                    <a asp-action="Index" class="btn btn-light btn-fw">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Tadawi.Models.Prescription>
+
+@{
+    ViewData["Title"] = "إدارة الوصفات الطبية";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">سجل الوصفات الطبية</h4>
+                    <a asp-action="Create" class="btn btn-gradient-primary btn-fw">
+                        <i class="mdi mdi-file-plus"></i> وصفة جديدة
+                    </a>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-info card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">الوصفات اليوم <i class="mdi mdi-calendar-today mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">@Model.Count(p => p.DispenseDate.Date == DateTime.Today)</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-warning card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">قيد الانتظار <i class="mdi mdi-clock-outline mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">@Model.Count(p => p.DispenseDate > DateTime.Now)</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 stretch-card grid-margin">
+                        <div class="card bg-gradient-success card-img-holder text-white">
+                            <div class="card-body">
+                                <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                <h4 class="font-weight-normal mb-3">تم الصرف <i class="mdi mdi-check-circle-outline mdi-24px float-right"></i>
+                                </h4>
+                                <h2 class="mb-5">@Model.Count(p => p.DispenseDate <= DateTime.Now)</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>المريض</th>
+                                <th>الدواء</th>
+                                <th>الجرعة</th>
+                                <th>الصيدلية</th>
+                                <th>تاريخ الصرف</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderByDescending(p => p.DispenseDate))
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>
+                                        <div class="font-weight-bold">@item.Visit?.Patient?.Name</div>
+                                        <small class="text-muted">ملف: @item.Visit?.PatientId</small>
+                                    </td>
+                                    <td>
+                                        <div class="font-weight-bold">@item.Medicine?.MedicineName</div>
+                                        <small class="text-muted">@item.Medicine?.Type</small>
+                                    </td>
+                                    <td>@item.Dosage</td>
+                                    <td>@item.Pharmacy?.Name</td>
+                                    <td>
+                                        <div>@item.DispenseDate.ToString("yyyy/MM/dd")</div>
+                                        <small class="text-muted">@item.DispenseDate.ToString("hh:mm tt")</small>
+                                    </td>
+                                    <td>
+                                        @if (item.DispenseDate > DateTime.Now)
+                                        {
+                                            <label class="badge badge-warning">قيد الانتظار</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="badge badge-success">تم الصرف</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-inverse-info btn-icon" title="عرض">
+                                            <i class="mdi mdi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-inverse-warning btn-icon" title="تعديل">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-inverse-secondary btn-icon" onclick="printPrescription(@item.Id)" title="طباعة">
+                                            <i class="mdi mdi-printer"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function printPrescription(id) {
+            // Placeholder for print functionality
+            alert('سيتم طباعة الوصفة رقم: ' + id);
+        }
+    </script>
+}

@@ -1,0 +1,66 @@
+﻿@model Tadawi.Models.Prescription
+@{
+    ViewData["Title"] = "إضافة وصفة طبية";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">إضافة وصفة طبية جديدة</h4>
+                <p class="card-description"> أدخل تفاصيل الوصفة </p>
+                
+                <form asp-action="Create" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>الزيارة (المريض)</label>
+                                <select name="VisitId" class="form-control" asp-items="ViewBag.VisitId">
+                                    <option value="">-- اختر الزيارة --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>الصيدلية</label>
+                                <select name="PharmacyId" class="form-control" asp-items="ViewBag.PharmacyId">
+                                    <option value="">-- اختر الصيدلية --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>الدواء</label>
+                                <select name="MedicineId" class="form-control" asp-items="ViewBag.MedicineId">
+                                    <option value="">-- اختر الدواء --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Dosage">الجرعة / طريقة الاستعمال</label>
+                                <input asp-for="Dosage" class="form-control" placeholder="مثلاً: حبة 3 مرات يومياً بعد الأكل" />
+                                <span asp-validation-for="Dosage" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">إرسال الوصفة</button>
+                    <a asp-controller="Visits" asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,59 @@
+﻿@model Tadawi.Models.Prescription
+
+@{
+    ViewData["Title"] = "تعديل وصفة";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">تعديل بيانات الوصفة</h4>
+                <p class="card-description"> قم بتعديل البيانات المطلوبة </p>
+                
+                <form asp-action="Edit" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    
+                    <div class="form-group">
+                        <label asp-for="VisitId">الزيارة</label>
+                        <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId"></select>
+                        <span asp-validation-for="VisitId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PharmacyId">الصيدلية</label>
+                        <select asp-for="PharmacyId" class="form-control" asp-items="ViewBag.PharmacyId"></select>
+                        <span asp-validation-for="PharmacyId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MedicineId">الدواء</label>
+                        <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId"></select>
+                        <span asp-validation-for="MedicineId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Dosage">الجرعة</label>
+                        <input asp-for="Dosage" class="form-control" />
+                        <span asp-validation-for="Dosage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DispenseDate">تاريخ الصرف</label>
+                        <input asp-for="DispenseDate" class="form-control" />
+                        <span asp-validation-for="DispenseDate" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ التعديلات</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,62 @@
+﻿@model Tadawi.Models.Prescription
+
+@{
+    ViewData["Title"] = "تفاصيل الوصفة";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-4 border-bottom pb-3">
+                    <h2 class="text-primary"><i class="mdi mdi-file-document"></i> وصفة طبية</h2>
+                    <p class="text-muted">رقم الوصفة: #@Model.Id</p>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold text-secondary">بيانات المريض</h5>
+                        <p class="mb-1"><strong>الاسم:</strong> @Model.Visit?.Patient?.Name</p>
+                        <p class="mb-1"><strong>رقم الملف:</strong> @Model.Visit?.PatientId</p>
+                    </div>
+                    <div class="col-md-6 text-md-left" style="direction: ltr;">
+                        <h5 class="font-weight-bold text-secondary">بيانات الصرف</h5>
+                        <p class="mb-1"><strong>التاريخ:</strong> @Model.DispenseDate.ToString("yyyy/MM/dd hh:mm tt")</p>
+                        <p class="mb-1"><strong>الصيدلية:</strong> @Model.Pharmacy?.Name</p>
+                    </div>
+                </div>
+
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <h5 class="font-weight-bold text-primary mb-3"><i class="mdi mdi-pill"></i> الدواء الموصوف</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>اسم الدواء:</strong> @Model.Medicine?.MedicineName</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>النوع:</strong> @Model.Medicine?.Type</p>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <p class="mb-0"><strong>الجرعة / طريقة الاستعمال:</strong></p>
+                                <p class="lead text-dark">@Model.Dosage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center d-print-none mt-4">
+                    <button onclick="window.print()" class="btn btn-gradient-primary btn-fw me-2">
+                        <i class="mdi mdi-printer"></i> طباعة
+                    </button>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-gradient-warning btn-fw me-2">
+                        <i class="mdi mdi-pencil"></i> تعديل
+                    </a>
+                    <a asp-action="Index" class="btn btn-light btn-fw">
+                        <i class="mdi mdi-arrow-right"></i> عودة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
