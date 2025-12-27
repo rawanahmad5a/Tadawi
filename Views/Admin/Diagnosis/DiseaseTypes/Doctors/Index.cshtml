@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Tadawi.Models.Doctor>
+
+@{
+    ViewData["Title"] = "إدارة الأطباء";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="card-title">إدارة الأطباء</h4>
+                    <a asp-action="Create" class="btn btn-gradient-primary btn-fw">
+                        <i class="mdi mdi-account-plus"></i> إضافة طبيب
+                    </a>
+                </div>
+
+                <div class="row">
+                    @foreach (var doctor in Model)
+                    {
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-info card-img-holder text-white">
+                                <div class="card-body text-center">
+                                    <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                                    <div class="mb-3">
+                                        <i class="mdi mdi-doctor mdi-48px"></i>
+                                    </div>
+                                    <h4 class="font-weight-normal mb-3">@doctor.Name</h4>
+                                    <p class="mb-2 badge badge-light text-dark">@doctor.Specialization</p>
+                                    <p class="mb-4"><i class="mdi mdi-phone"></i> @doctor.Phone</p>
+                                    
+                                    <div class="d-flex justify-content-center">
+                                        <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-sm btn-light text-info mr-2">
+                                            <i class="mdi mdi-eye"></i> عرض
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-sm btn-light text-warning mr-2">
+                                            <i class="mdi mdi-pencil"></i> تعديل
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-sm btn-light text-danger">
+                                            <i class="mdi mdi-delete"></i> حذف
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

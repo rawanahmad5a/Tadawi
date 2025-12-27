@@ -1,0 +1,51 @@
+﻿@model Tadawi.Models.Doctor
+
+@{
+    ViewData["Title"] = "إضافة طبيب";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">إضافة طبيب جديد</h4>
+                <p class="card-description"> أدخل بيانات الطبيب </p>
+                
+                <form asp-action="Create" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Name">اسم الطبيب</label>
+                        <input asp-for="Name" class="form-control" placeholder="أدخل اسم الطبيب الرباعي" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Specialization">التخصص</label>
+                                <input asp-for="Specialization" class="form-control" placeholder="مثلاً: استشاري قلب" />
+                                <span asp-validation-for="Specialization" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Phone">رقم الهاتف</label>
+                                <input asp-for="Phone" class="form-control" placeholder="777XXXXXX" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
