@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<div class="container-fluid mt-4">
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row g-4">
+            <!-- Admin Cards -->
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-users-cog fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">إدارة المستخدمين</h4>
+                        <p class="card-text text-muted">إضافة وتعديل وحذف المستخدمين وصلاحياتهم.</p>
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-primary stretched-link">ذهاب</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">الأطباء</h4>
+                        <p class="card-text text-muted">قائمة الأطباء وإدارة بياناتهم.</p>
+                        <a asp-controller="Doctors" asp-action="Index"
+                            class="btn btn-outline-primary stretched-link">ذهاب</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-clinic-medical fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">الصيدليات</h4>
+                        <p class="card-text text-muted">إدارة الصيدليات المسجلة في النظام.</p>
+                        <a asp-controller="Pharmacies" asp-action="Index"
+                            class="btn btn-outline-primary stretched-link">ذهاب</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                        <h5>بحث عن ملف</h5>
+                        <a asp-controller="Patients" asp-action="Index"
+                            class="btn btn-primary text-white stretched-link mt-2">بحث</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-folder-plus fa-3x text-primary mb-3"></i>
+                        <h5>إضافة ملف جديد</h5>
+                        <a asp-controller="Patients" asp-action="Create"
+                            class="btn btn-outline-primary stretched-link mt-2">فتح ملف</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (User.IsInRole("Secretary"))
+    {
+        <div class="row g-4 justify-content-center">
+            <!-- Search Patient File -->
+            <div class="col-md-5">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-search fa-4x text-primary mb-3"></i>
+                        <h3 class="card-title mb-3" style="font-family: 'Cairo', sans-serif;">بحث عن ملف</h3>
+                        <a asp-controller="Patients" asp-action="Index"
+                            class="btn btn-primary btn-lg text-white px-5">بحث</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add New Patient File -->
+            <div class="col-md-5">
+                <div class="card h-100 text-center p-4 hover-shadow">
+                    <div class="card-body">
+                        <i class="fas fa-folder-plus fa-4x text-primary mb-3"></i>
+                        <h3 class="card-title mb-3" style="font-family: 'Cairo', sans-serif;">إضافة ملف جديد</h3>
+                        <a asp-controller="Patients" asp-action="Create" class="btn btn-primary btn-lg text-white px-5">فتح
+                            ملف</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!User.IsInRole("Admin") && !User.IsInRole("Secretary"))
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card text-center p-5">
+                    <div class="card-body">
+                        <i class="fas fa-user-lock fa-4x text-muted mb-4"></i>
+                        <h3>مرحباً بك</h3>
+                        <p class="text-muted">يرجى التواصل مع الإدارة لتفعيل حسابك وتحديد الصلاحيات.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
