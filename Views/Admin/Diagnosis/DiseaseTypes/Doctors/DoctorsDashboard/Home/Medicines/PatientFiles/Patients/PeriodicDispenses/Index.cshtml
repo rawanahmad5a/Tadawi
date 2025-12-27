@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Tadawi.Models.PeriodicDispense>
+
+@{
+    ViewData["Title"] = "الصرف الدوري";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">سجل الصرف الدوري</h4>
+                    <a asp-action="Create" class="btn btn-gradient-primary btn-fw">
+                        <i class="mdi mdi-plus"></i> إضافة صرف دوري
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>التكرار</th>
+                                <th>تاريخ الصرف القادم</th>
+                                <th>المريض</th>
+                                <th>الدواء</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Frequency</td>
+                                    <td>@item.NextDispenseDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.Patient?.Name</td>
+                                    <td>@item.Medicine?.MedicineName</td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.PeriodicDispenseId" class="btn btn-inverse-info btn-icon" title="تفاصيل">
+                                            <i class="mdi mdi-information"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.PeriodicDispenseId" class="btn btn-inverse-warning btn-icon" title="تعديل">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.PeriodicDispenseId" class="btn btn-inverse-danger btn-icon" title="حذف">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

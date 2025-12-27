@@ -1,0 +1,53 @@
+﻿@model Tadawi.Models.PeriodicDispense
+
+@{
+    ViewData["Title"] = "تفاصيل الصرف الدوري";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-4 border-bottom pb-3">
+                    <h2 class="text-primary"><i class="mdi mdi-calendar-clock"></i> تفاصيل الصرف الدوري</h2>
+                </div>
+
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="font-weight-bold text-primary mb-3">التكرار</h5>
+                                <p class="lead text-dark">@Model.Frequency</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="font-weight-bold text-primary mb-3">تاريخ الصرف القادم</h5>
+                                <p class="lead text-dark">@Model.NextDispenseDate.ToString("yyyy-MM-dd")</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="font-weight-bold text-primary mb-3">المريض</h5>
+                                <p class="lead text-dark">@Model.Patient?.Name</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="font-weight-bold text-primary mb-3">الدواء</h5>
+                                <p class="lead text-dark">@Model.Medicine?.MedicineName</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.PeriodicDispenseId" class="btn btn-gradient-warning btn-fw me-2">
+                        <i class="mdi mdi-pencil"></i> تعديل
+                    </a>
+                    <a asp-action="Index" class="btn btn-light btn-fw">
+                        <i class="mdi mdi-arrow-right"></i> عودة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

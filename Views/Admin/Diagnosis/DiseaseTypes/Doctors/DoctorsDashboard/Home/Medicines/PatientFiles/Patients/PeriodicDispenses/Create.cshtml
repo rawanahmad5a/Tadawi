@@ -1,0 +1,64 @@
+﻿@model Tadawi.Models.PeriodicDispense
+
+@{
+    ViewData["Title"] = "إضافة صرف دوري";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">إضافة صرف دوري جديد</h4>
+                <p class="card-description"> أدخل بيانات الصرف الدوري </p>
+                
+                <form asp-action="Create" class="forms-sample">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Frequency">التكرار</label>
+                                <input asp-for="Frequency" class="form-control" placeholder="مثلاً: شهري، أسبوعي" />
+                                <span asp-validation-for="Frequency" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="NextDispenseDate">تاريخ الصرف القادم</label>
+                                <input asp-for="NextDispenseDate" type="date" class="form-control" />
+                                <span asp-validation-for="NextDispenseDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PatientId">المريض</label>
+                                <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId">
+                                    <option value="">-- اختر المريض --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="MedicineId">الدواء</label>
+                                <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId">
+                                    <option value="">-- اختر الدواء --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gradient-primary mr-2">حفظ</button>
+                    <a asp-action="Index" class="btn btn-light">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

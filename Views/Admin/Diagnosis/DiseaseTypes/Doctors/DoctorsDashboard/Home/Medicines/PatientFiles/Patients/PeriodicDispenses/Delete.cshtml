@@ -1,0 +1,41 @@
+﻿@model Tadawi.Models.PeriodicDispense
+
+@{
+    ViewData["Title"] = "حذف صرف دوري";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="card-title text-danger">حذف صرف دوري</h4>
+                <p class="card-description"> هل أنت متأكد من رغبتك في حذف هذا السجل؟ </p>
+                
+                <div class="bg-light p-4 rounded mb-4 text-right" style="direction: rtl;">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">التكرار:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Frequency)</dd>
+
+                        <dt class="col-sm-4">تاريخ الصرف:</dt>
+                        <dd class="col-sm-8">@Model.NextDispenseDate.ToString("yyyy-MM-dd")</dd>
+
+                        <dt class="col-sm-4">المريض:</dt>
+                        <dd class="col-sm-8">@Model.Patient?.Name</dd>
+
+                        <dt class="col-sm-4">الدواء:</dt>
+                        <dd class="col-sm-8">@Model.Medicine?.MedicineName</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="DeleteConfirmed">
+                    <input type="hidden" asp-for="PeriodicDispenseId" />
+                    <button type="submit" class="btn btn-danger btn-fw">
+                        <i class="mdi mdi-delete"></i> تأكيد الحذف
+                    </button>
+                    <a asp-action="Index" class="btn btn-light btn-fw">إلغاء</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
