@@ -1,0 +1,159 @@
+﻿@model Tadawi.Models.Patient
+
+@{
+    ViewData["Title"] = "إضافة ملف جديد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-folder-plus me-2"></i> إضافة ملف جديد
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="CreateWithVisit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- معلومات المريض -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2 mb-3">
+                                    <i class="fas fa-user me-2"></i> معلومات المريض
+                                </h5>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-bold">الاسم الكامل</label>
+                                <input asp-for="Name" class="form-control" placeholder="أدخل الاسم الكامل" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Phone" class="form-label fw-bold">رقم الهاتف</label>
+                                <input asp-for="Phone" class="form-control" placeholder="05xxxxxxxx" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Age" class="form-label fw-bold">العمر</label>
+                                <input asp-for="Age" class="form-control" type="number" placeholder="العمر" />
+                                <span asp-validation-for="Age" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Gender" class="form-label fw-bold">الجنس</label>
+                                <select asp-for="Gender" class="form-select">
+                                    <option value="">-- اختر --</option>
+                                    <option value="ذكر">ذكر</option>
+                                    <option value="أنثى">أنثى</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="Address" class="form-label fw-bold">العنوان</label>
+                                <textarea asp-for="Address" class="form-control" rows="2"
+                                    placeholder="أدخل العنوان الكامل"></textarea>
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- معلومات الزيارة الأولى -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2 mb-3">
+                                    <i class="fas fa-file-medical me-2"></i> إضافة زيارة
+                                </h5>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">تاريخ الزيارة</label>
+                                <input type="date" name="VisitDate" class="form-control"
+                                    value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">وقت الزيارة</label>
+                                <input type="time" name="VisitTime" class="form-control"
+                                    value="@DateTime.Now.ToString("HH:mm")" required />
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">نوع الزيارة</label>
+                                <select name="VisitType" class="form-select" required>
+                                    <option value="كشف" selected>كشف</option>
+                                    <option value="مراجعة">مراجعة</option>
+                                    <option value="استشارة">استشارة</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">القسم الطبي</label>
+                                <select id="SpecializationFilter" class="form-select">
+                                    <option value="">-- اختر القسم --</option>
+                                    @if (ViewBag.Specializations != null)
+                                    {
+                                        foreach (var spec in (List<string>)ViewBag.Specializations)
+                                        {
+                                            <option value="@spec">@spec</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">الطبيب المعالج</label>
+                                <select name="DoctorId" id="DoctorSelector" class="form-select" disabled>
+                                    <option value="">-- اختر الطبيب --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- أزرار التحكم -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i> إلغاء
+                            </a>
+                            <button type="submit" class="btn btn-primary px-5">
+                                <i class="fas fa-save me-1"></i> حفظ الملف
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            var allDoctors = @Html.Raw(Json.Serialize(ViewBag.DoctorsJson));
+
+            $("#SpecializationFilter").change(function () {
+                var spec = $(this).val();
+                var $doctorSelect = $("#DoctorSelector");
+
+                $doctorSelect.empty();
+                $doctorSelect.append('<option value="">-- اختر الطبيب --</option>');
+
+                if (spec) {
+                    $doctorSelect.prop('disabled', false);
+                    var filtered = allDoctors.filter(d => d.specialization === spec);
+                    $.each(filtered, function (i, d) {
+                        $doctorSelect.append($('<option></option>').val(d.id).text(d.name));
+                    });
+                } else {
+                    $doctorSelect.prop('disabled', true);
+                }
+            });
+        });
+    </script>
+}

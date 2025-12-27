@@ -1,0 +1,103 @@
+﻿@model Tadawi.Models.Patient
+
+@{
+    ViewData["Title"] = "تفاصيل المريض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var visits = ViewBag.PatientVisits as List<Tadawi.Models.Visit>;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">
+                    <i class="fas fa-user-circle me-2"></i> تفاصيل المريض
+                </h2>
+                <button onclick="window.history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-right me-1"></i> رجوع
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i> المعلومات الشخصية</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong>الاسم:</strong>
+                            <p class="text-muted">@Model.Name</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>رقم الهاتف:</strong>
+                            <p class="text-muted">@Model.Phone</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>العمر:</strong>
+                            <p class="text-muted">@Model.Age سنة</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>الجنس:</strong>
+                            <p class="text-muted">@Model.Gender</p>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <strong>العنوان:</strong>
+                            <p class="text-muted">@Model.Address</p>
+                        </div>
+                        <div class="col-md-12">
+                            <strong>رقم الملف:</strong>
+                            <p class="text-muted">#@Model.PatientFileId</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visit History -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i> سجل الزيارات</h5>
+                </div>
+                <div class="card-body">
+                    @if (visits != null && visits.Any())
+                    {
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="table-light">
+                                    <th>التاريخ</th>
+                                    <th>نوع الزيارة</th>
+                                    <th>الطبيب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var visit in visits)
+                                {
+                                    <tr>
+                                        <td>@visit.VisitDate.ToString("yyyy/MM/dd - hh:mm tt")</td>
+                                        <td>@visit.VisitType</td>
+                                        <td>@(visit.Doctor?.Name ?? "غير محدد")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            لا توجد زيارات سابقة لهذا المريض
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
